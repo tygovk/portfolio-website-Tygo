@@ -1281,7 +1281,13 @@ button, input, textarea {
   font-size: 0.95rem;
 }
 
+.detail-media-gallery {
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
 .detail-media-frame {
+  position: relative;
   width: 100%;
   max-height: 540px;
   aspect-ratio: 16 / 9;
@@ -1290,7 +1296,6 @@ button, input, textarea {
   background-color: #0b0f19;
   border: 1px solid var(--border-muted);
   box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 30px rgba(99, 102, 241, 0.15);
-  margin-bottom: 3rem;
 }
 
 .detail-hero-image {
@@ -1298,6 +1303,178 @@ button, input, textarea {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: opacity 0.25s ease-in-out, transform 0.4s ease-out;
+  cursor: zoom-in;
+}
+
+/* Navigatieknoppen binnen het detail hero frame */
+.gallery-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  transition: all var(--transition-fast);
+}
+
+.gallery-nav-btn:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-secondary);
+  color: #ffffff;
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+}
+
+.gallery-prev {
+  left: 1rem;
+}
+
+.gallery-next {
+  right: 1rem;
+}
+
+/* Teller indicator in hoek */
+.gallery-counter-pill {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 4;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #f8fafc;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+/* Knop om direct te vergroten */
+.gallery-zoom-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 4;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.gallery-zoom-btn:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-secondary);
+  transform: scale(1.1);
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.4);
+}
+
+/* Horizontale thumbnail strip onder de hoofdfoto */
+.gallery-thumbnails-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding: 1rem 0.25rem 0.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99, 102, 241, 0.3) transparent;
+}
+
+.gallery-thumbnails-strip::-webkit-scrollbar {
+  height: 6px;
+}
+
+.gallery-thumbnails-strip::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.4);
+  border-radius: 9999px;
+}
+
+.gallery-thumb-btn {
+  width: 90px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 2px solid transparent;
+  background: #0f172a;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.55;
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-thumb-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.5);
+}
+
+.gallery-thumb-btn.is-active {
+  opacity: 1;
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.5);
+}
+
+.gallery-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Badge op projectkaarten op de homepage */
+.project-img-frame {
+  position: relative;
+}
+
+.project-card-gallery-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f8fafc;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
 }
 
 .detail-layout-grid {
@@ -1654,7 +1831,7 @@ button, input, textarea {
 }
 
 /* ==========================================================================
-   Project Image Drag & Drop Uploader
+   Multi-Photo Manager (Up to 10 photos)
    ========================================================================== */
 .sr-only-input {
   position: absolute;
@@ -1667,10 +1844,177 @@ button, input, textarea {
   border: 0;
 }
 
+.form-label-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.photo-counter-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+  letter-spacing: 0.02em;
+}
+
+.photo-counter-badge.is-full {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+
+/* Grid met geüploade foto's */
+.project-photos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.photo-tile {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #090d16;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all var(--transition-fast);
+}
+
+.photo-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.45);
+}
+
+.photo-tile.is-cover {
+  border: 2px solid var(--accent-primary);
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.35);
+}
+
+.photo-tile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-cover-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 2;
+  background: rgba(99, 102, 241, 0.92);
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.photo-index-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 2;
+  background: rgba(15, 23, 42, 0.75);
+  color: #cbd5e1;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* Hover overlay met acties */
+.photo-tile-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: rgba(11, 15, 25, 0.82);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.45rem;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.photo-tile:hover .photo-tile-overlay,
+.photo-tile:focus-within .photo-tile-overlay {
+  opacity: 1;
+}
+
+.photo-overlay-top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.photo-overlay-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+}
+
+.photo-btn-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(15, 23, 42, 0.7);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all var(--transition-fast);
+}
+
+.photo-btn-icon:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-secondary);
+}
+
+.photo-btn-delete:hover {
+  background: rgba(239, 68, 68, 0.85);
+  border-color: #ef4444;
+}
+
+.photo-btn-make-cover {
+  font-size: 0.65rem;
+  font-weight: 600;
+  background: rgba(99, 102, 241, 0.25);
+  border: 1px solid var(--accent-primary);
+  color: #c7d2fe;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.photo-btn-make-cover:hover {
+  background: var(--accent-primary);
+  color: #ffffff;
+}
+
+/* Drag & drop zone */
 .project-image-dropzone {
   position: relative;
   width: 100%;
-  min-height: 136px;
+  min-height: 124px;
   background-color: rgba(15, 23, 42, 0.55);
   border: 2px dashed var(--border-subtle);
   border-radius: var(--radius-xl);
@@ -1683,7 +2027,6 @@ button, input, textarea {
   outline: none;
   transition: all var(--transition-fast);
   user-select: none;
-  overflow: hidden;
 }
 
 .project-image-dropzone:hover,
@@ -1704,13 +2047,13 @@ button, input, textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
   pointer-events: none;
 }
 
 .dropzone-icon-box {
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: rgba(99, 102, 241, 0.15);
   border: 1px solid rgba(99, 102, 241, 0.35);
@@ -1718,7 +2061,7 @@ button, input, textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform var(--transition-fast), color var(--transition-fast), background-color var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 
 .project-image-dropzone:hover .dropzone-icon-box {
@@ -1727,21 +2070,10 @@ button, input, textarea {
   background: var(--accent-primary);
 }
 
-.project-image-dropzone.is-dragover .dropzone-icon-box {
-  transform: scale(1.12);
-  color: #38bdf8;
-  border-color: #38bdf8;
-  background: rgba(56, 189, 248, 0.25);
-}
-
 .dropzone-prompt {
   font-size: 0.95rem;
   color: var(--text-main);
   margin-bottom: 0.2rem;
-}
-
-.dropzone-prompt strong {
-  color: #ffffff;
 }
 
 .dropzone-browse-text {
@@ -1755,108 +2087,61 @@ button, input, textarea {
   color: var(--text-muted);
 }
 
-/* Voorvertoning */
-.dropzone-preview {
+/* Compacte dropzone strook wanneer er al 1-9 foto's zijn */
+.dropzone-compact {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  justify-content: center;
+  gap: 0.65rem;
   width: 100%;
-  text-align: left;
+  padding: 0.4rem;
+  pointer-events: none;
 }
 
-.dropzone-preview-thumb-wrap {
-  width: 120px;
-  height: 80px;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  background: #0f172a;
-  border: 1px solid var(--border-subtle);
-  flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+.project-image-dropzone.is-compact {
+  min-height: 52px;
+  padding: 0.75rem 1rem;
 }
 
-.dropzone-preview-thumb {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.dropzone-preview-details {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  flex: 1;
-  min-width: 0;
-}
-
-.preview-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.preview-filename {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-main);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.preview-badge {
-  font-size: 0.75rem;
-  color: #34d399;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.preview-badge::before {
-  content: '';
-  width: 6px;
-  height: 6px;
+.dropzone-plus-icon {
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background-color: #10b981;
-}
-
-.dropzone-preview-buttons {
+  background: rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  color: var(--accent-secondary);
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  margin-top: 0.25rem;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
-.dropzone-btn-action {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
+.dropzone-compact-text {
+  font-size: 0.88rem;
+  font-weight: 500;
   color: var(--text-main);
-  font-size: 0.8rem;
-  padding: 0.35rem 0.65rem;
-  cursor: pointer;
-  display: inline-flex;
+}
+
+/* Max 10 bereikt notice */
+.photos-max-notice {
+  display: flex;
   align-items: center;
-  gap: 0.4rem;
-  transition: all var(--transition-fast);
-}
-
-.dropzone-btn-action:hover {
-  background: rgba(99, 102, 241, 0.2);
-  border-color: var(--accent-primary);
-  color: #ffffff;
-}
-
-.dropzone-btn-action.dropzone-btn-remove:hover {
-  background: rgba(239, 68, 68, 0.18);
-  border-color: rgba(239, 68, 68, 0.5);
-  color: #fca5a5;
-}
-
-/* URL switch */
-.dropzone-url-switch {
+  gap: 0.65rem;
+  padding: 0.75rem 1rem;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: var(--radius-md);
+  color: #38bdf8;
+  font-size: 0.85rem;
   margin-top: 0.5rem;
+  animation: fadeInDown 0.2s ease-out;
+}
+
+/* URL adder */
+.dropzone-url-switch {
+  margin-top: 0.65rem;
 }
 
 .dropzone-url-toggle-btn {
@@ -1865,7 +2150,7 @@ button, input, textarea {
   color: var(--text-muted);
   font-size: 0.8rem;
   cursor: pointer;
-  padding: 0.25rem 0;
+  padding: 0.2rem 0;
   transition: color var(--transition-fast);
 }
 
@@ -1877,6 +2162,156 @@ button, input, textarea {
 .url-input-container {
   margin-top: 0.5rem;
   animation: fadeInDown 0.2s ease-out;
+}
+
+.url-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.url-input-row .form-input {
+  flex: 1;
+}
+
+/* ==========================================================================
+   Lightbox Fotogalerij Modal (Fullscreen View)
+   ========================================================================== */
+.lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(3, 7, 18, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.lightbox-close-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1210;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 1.8rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.lightbox-close-btn:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-secondary);
+  transform: scale(1.08);
+}
+
+.lightbox-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.lightbox-media-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 90vw;
+  max-height: 84vh;
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 76vh;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #050811;
+  transition: opacity 0.2s ease;
+}
+
+.lightbox-info-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 0.85rem;
+  padding: 0 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.lightbox-title {
+  color: #ffffff;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+}
+
+.lightbox-counter {
+  font-weight: 600;
+  color: var(--accent-secondary);
+}
+
+.lightbox-nav-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.lightbox-nav-btn:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-secondary);
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+}
+
+@media (max-width: 768px) {
+  .lightbox-container {
+    gap: 0.5rem;
+  }
+  .lightbox-nav-btn {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1205;
+  }
+  .lightbox-prev {
+    left: 0;
+  }
+  .lightbox-next {
+    right: 0;
+  }
 }
 
 @keyframes fadeInDown {

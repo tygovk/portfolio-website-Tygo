@@ -30,6 +30,11 @@ export const defaultProjects = [
       "Offline-first werking met veilige encryptie in de browser"
     ],
     afbeeldingUrl: "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1200&q=80",
+    afbeeldingen: [
+      "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507842229451-7f01be45c06b?auto=format&fit=crop&w=1200&q=80"
+    ],
     tags: ["AI", "React", "Python", "Sentiment Analysis", "Tailwind CSS"],
     liveDemoUrl: "https://example.com/demo/dagboek-app",
     githubUrl: "https://github.com/tygovk/slimme-dagboek-app"
@@ -48,6 +53,11 @@ export const defaultProjects = [
       "Ondersteuning voor PDF's, Markdown-aantekeningen en college-opnames"
     ],
     afbeeldingUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+    afbeeldingen: [
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80"
+    ],
     tags: ["Python", "FastAPI", "Gemini API", "TypeScript", "Vector Search"],
     liveDemoUrl: "https://example.com/demo/studieassistent",
     githubUrl: "https://github.com/tygovk/ai-studieassistent"
@@ -66,6 +76,11 @@ export const defaultProjects = [
       "Eenvoudige webhook-koppeling voor Home Assistant en domoticasystemen"
     ],
     afbeeldingUrl: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=1200&q=80",
+    afbeeldingen: [
+      "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1200&q=80"
+    ],
     tags: ["Python", "PyTorch", "Data Science", "D3.js", "Time Series"],
     liveDemoUrl: "https://example.com/demo/ecotrack",
     githubUrl: "https://github.com/tygovk/ecotrack-ai"
@@ -156,24 +171,41 @@ export async function hashText(str) {
   return 'fallback_' + Math.abs(hash).toString(16);
 }
 
+export function normalizeProject(project) {
+  if (!project) return project;
+  let images = Array.isArray(project.afbeeldingen) ? [...project.afbeeldingen] : [];
+  if (images.length === 0 && project.afbeeldingUrl) {
+    images = [project.afbeeldingUrl];
+  }
+  // Maximaal 10 foto's per project
+  images = images.filter(Boolean).slice(0, 10);
+  const primaryImage = images[0] || project.afbeeldingUrl || '';
+  return {
+    ...project,
+    afbeeldingen: images,
+    afbeeldingUrl: primaryImage
+  };
+}
+
 export function getProjectsData() {
   try {
     const saved = safeGetItem(STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
+        return parsed.map(normalizeProject);
       }
     }
   } catch (err) {
     console.warn('Kon projecten niet uit opslag laden:', err);
   }
-  return defaultProjects;
+  return defaultProjects.map(normalizeProject);
 }
 
 export function saveProjectsData(projects) {
   try {
-    safeSetItem(STORAGE_KEY, JSON.stringify(projects));
+    const normalized = (projects || []).map(normalizeProject);
+    safeSetItem(STORAGE_KEY, JSON.stringify(normalized));
   } catch (err) {
     console.error('Fout bij opslaan van projecten:', err);
   }
@@ -181,7 +213,8 @@ export function saveProjectsData(projects) {
 
 export function addProject(newProject) {
   const current = getProjectsData();
-  const updated = [newProject, ...current.filter(p => p.id !== newProject.id)];
+  const normalizedNew = normalizeProject(newProject);
+  const updated = [normalizedNew, ...current.filter(p => p.id !== normalizedNew.id)];
   saveProjectsData(updated);
   return updated;
 }
@@ -190,7 +223,7 @@ export function updateProject(projectId, updatedData) {
   const current = getProjectsData();
   const updated = current.map(p => {
     if (p.id === projectId) {
-      return { ...p, ...updatedData, id: projectId };
+      return normalizeProject({ ...p, ...updatedData, id: projectId });
     }
     return p;
   });
