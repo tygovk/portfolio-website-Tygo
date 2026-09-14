@@ -625,14 +625,82 @@
           />
         </div>
 
-        <div class="form-group">
-          <label for="form-project-image" class="form-label">Afbeelding URL</label>
-          <input
-            type="url"
-            id="form-project-image"
-            class="form-input"
-            placeholder="https://images.unsplash.com/... (of laat leeg voor standaard AI afbeelding)"
-          />
+        <div class="form-group" id="form-group-project-image">
+          <label class="form-label" id="label-project-image">Projectafbeelding</label>
+          
+          <!-- Drag & Drop Zone -->
+          <div
+            class="project-image-dropzone"
+            id="project-image-dropzone"
+            tabindex="0"
+            role="button"
+            aria-label="Sleep een projectafbeelding hierheen of klik om te uploaden"
+          >
+            <input
+              type="file"
+              id="form-project-image-file"
+              accept="image/png, image/jpeg, image/jpg, image/webp, image/svg+xml, image/gif"
+              class="sr-only-input"
+            />
+            
+            <!-- Lege toestand (drop prompt) -->
+            <div class="dropzone-empty" id="dropzone-empty-state">
+              <div class="dropzone-icon-box">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
+              <div class="dropzone-content">
+                <p class="dropzone-prompt">
+                  <strong>Sleep een afbeelding hierheen</strong> of <span class="dropzone-browse-text">klik om te bladeren</span>
+                </p>
+                <p class="dropzone-format-info">PNG, JPG, WEBP of SVG (wordt automatisch geoptimaliseerd)</p>
+              </div>
+            </div>
+
+            <!-- Voorvertoning toestand (wanneer afbeelding geladen/gesleept is) -->
+            <div class="dropzone-preview hidden" id="dropzone-preview-state">
+              <div class="dropzone-preview-thumb-wrap">
+                <img id="dropzone-preview-img" src="" alt="Project voorvertoning" class="dropzone-preview-thumb" />
+              </div>
+              <div class="dropzone-preview-details">
+                <div class="preview-meta">
+                  <span class="preview-filename" id="dropzone-filename">afbeelding.jpg</span>
+                  <span class="preview-badge" id="dropzone-filesize">Klaar voor publicatie</span>
+                </div>
+                <div class="dropzone-preview-buttons">
+                  <button type="button" class="dropzone-btn-action" id="btn-change-image" title="Andere afbeelding kiezen">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    Vervangen
+                  </button>
+                  <button type="button" class="dropzone-btn-action dropzone-btn-remove" id="btn-remove-image" title="Afbeelding verwijderen">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    Verwijderen
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Verborgen veld voor de uiteindelijke DataURL / URL string -->
+          <input type="hidden" id="form-project-image" value="" />
+
+          <!-- Optionele uitklapknop om alternatief toch een web-URL in te voeren -->
+          <div class="dropzone-url-switch">
+            <button type="button" class="dropzone-url-toggle-btn" id="btn-toggle-url-input">
+              <span id="url-toggle-text">+ Of voer een web-URL in</span>
+            </button>
+            <div class="url-input-container hidden" id="url-input-container">
+              <input
+                type="url"
+                id="form-project-image-url-alt"
+                class="form-input"
+                placeholder="https://images.unsplash.com/... (optioneel)"
+              />
+            </div>
+          </div>
         </div>
 
         <div class="form-grid-2">

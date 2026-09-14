@@ -472,7 +472,204 @@ document.addEventListener('DOMContentLoaded', () => {
   const inputLive = document.getElementById('form-project-live');
   const inputGithub = document.getElementById('form-project-github');
 
+  // Drag & drop afbeeldingselementen
+  const projectImageDropzone = document.getElementById('project-image-dropzone');
+  const formProjectImageFile = document.getElementById('form-project-image-file');
+  const dropzoneEmptyState = document.getElementById('dropzone-empty-state');
+  const dropzonePreviewState = document.getElementById('dropzone-preview-state');
+  const dropzonePreviewImg = document.getElementById('dropzone-preview-img');
+  const dropzoneFilename = document.getElementById('dropzone-filename');
+  const dropzoneFilesize = document.getElementById('dropzone-filesize');
+  const btnChangeImage = document.getElementById('btn-change-image');
+  const btnRemoveImage = document.getElementById('btn-remove-image');
+  const btnToggleUrlInput = document.getElementById('btn-toggle-url-input');
+  const urlInputContainer = document.getElementById('url-input-container');
+  const inputImageUrlAlt = document.getElementById('form-project-image-url-alt');
+
   let idTouchedByUser = false;
+
+  // Afbeelding optimaliseren (verkleinen naar max 1200px voor soepele offline/local werking)
+  function optimizeProjectImage(file) {
+    return new Promise((resolve, reject) => {
+      if (!file || !file.type.startsWith('image/')) {
+        reject(new Error('Kies een geldige afbeelding.'));
+        return;
+      }
+      if (file.type === 'image/svg+xml') {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const maxDim = 1200;
+          let w = img.width;
+          let h = img.height;
+
+          if (w > maxDim || h > maxDim) {
+            if (w > h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            resolve(e.target.result);
+            return;
+          }
+
+          ctx.drawImage(img, 0, 0, w, h);
+          try {
+            const webp = canvas.toDataURL('image/webp', 0.85);
+            if (webp && webp.startsWith('data:image/webp')) {
+              resolve(webp);
+              return;
+            }
+          } catch (err) {}
+          resolve(canvas.toDataURL('image/jpeg', 0.85));
+        };
+        img.onerror = () => resolve(e.target.result);
+        img.src = e.target.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function setProjectImagePreview(dataUrl, filename = 'Projectafbeelding', badgeText = 'Klaar voor publicatie') {
+    if (inputImage) inputImage.value = dataUrl;
+    if (dropzonePreviewImg) dropzonePreviewImg.src = dataUrl;
+    if (dropzoneFilename) dropzoneFilename.textContent = filename;
+    if (dropzoneFilesize) dropzoneFilesize.textContent = badgeText;
+
+    if (dropzoneEmptyState) dropzoneEmptyState.classList.add('hidden');
+    if (dropzonePreviewState) dropzonePreviewState.classList.remove('hidden');
+  }
+
+  function resetProjectImageDropzone() {
+    if (inputImage) inputImage.value = '';
+    if (formProjectImageFile) formProjectImageFile.value = '';
+    if (inputImageUrlAlt) inputImageUrlAlt.value = '';
+    if (dropzonePreviewImg) dropzonePreviewImg.src = '';
+    if (dropzoneFilename) dropzoneFilename.textContent = 'afbeelding.jpg';
+
+    if (dropzoneEmptyState) dropzoneEmptyState.classList.remove('hidden');
+    if (dropzonePreviewState) dropzonePreviewState.classList.add('hidden');
+    if (urlInputContainer) urlInputContainer.classList.add('hidden');
+  }
+
+  async function handleDroppedProjectImage(file) {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      alert('Selecteer a.u.b. een geldige afbeelding (PNG, JPG, JPEG, WEBP of SVG).');
+      return;
+    }
+
+    try {
+      const sizeKB = (file.size / 1024).toFixed(0);
+      const dataUrl = await optimizeProjectImage(file);
+      setProjectImagePreview(dataUrl, file.name, `Geüpload (${sizeKB} KB)`);
+    } catch (err) {
+      console.error('Fout bij inlezen van projectafbeelding:', err);
+      alert('De afbeelding kon niet worden ingelezen.');
+    }
+  }
+
+  // Event listeners voor drag & drop op de dropzone
+  if (projectImageDropzone) {
+    ['dragenter', 'dragover'].forEach(eventName => {
+      projectImageDropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        projectImageDropzone.classList.add('is-dragover');
+      });
+    });
+
+    ['dragleave', 'dragend'].forEach(eventName => {
+      projectImageDropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        projectImageDropzone.classList.remove('is-dragover');
+      });
+    });
+
+    projectImageDropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      projectImageDropzone.classList.remove('is-dragover');
+
+      const files = e.dataTransfer ? e.dataTransfer.files : null;
+      if (files && files.length > 0) {
+        handleDroppedProjectImage(files[0]);
+      }
+    });
+
+    projectImageDropzone.addEventListener('click', (e) => {
+      if (e.target.closest('#btn-remove-image') || e.target.closest('#btn-change-image') || e.target.closest('.dropzone-url-switch')) {
+        return;
+      }
+      if (formProjectImageFile) formProjectImageFile.click();
+    });
+
+    projectImageDropzone.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (formProjectImageFile) formProjectImageFile.click();
+      }
+    });
+  }
+
+  if (formProjectImageFile) {
+    formProjectImageFile.addEventListener('change', (e) => {
+      const file = e.target.files ? e.target.files[0] : null;
+      if (file) handleDroppedProjectImage(file);
+    });
+  }
+
+  if (btnChangeImage && formProjectImageFile) {
+    btnChangeImage.addEventListener('click', (e) => {
+      e.stopPropagation();
+      formProjectImageFile.click();
+    });
+  }
+
+  if (btnRemoveImage) {
+    btnRemoveImage.addEventListener('click', (e) => {
+      e.stopPropagation();
+      resetProjectImageDropzone();
+    });
+  }
+
+  if (btnToggleUrlInput && urlInputContainer) {
+    btnToggleUrlInput.addEventListener('click', (e) => {
+      e.stopPropagation();
+      urlInputContainer.classList.toggle('hidden');
+      if (!urlInputContainer.classList.contains('hidden') && inputImageUrlAlt) {
+        inputImageUrlAlt.focus();
+      }
+    });
+  }
+
+  if (inputImageUrlAlt) {
+    inputImageUrlAlt.addEventListener('input', (e) => {
+      const url = e.target.value.trim();
+      if (url) {
+        setProjectImagePreview(url, 'Web afbeelding', 'Externe URL');
+      }
+    });
+  }
 
   function openAddProjectModal() {
     if (!isAdminLoggedIn()) {
@@ -487,6 +684,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (inputId) inputId.disabled = false;
 
     if (addProjectForm) addProjectForm.reset();
+    resetProjectImageDropzone();
     idTouchedByUser = false;
 
     modalBackdrop.classList.remove('hidden');
@@ -520,9 +718,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (inputRole) inputRole.value = project.mijnRol || '';
     if (inputFeatures) inputFeatures.value = Array.isArray(project.uniekeFuncties) ? project.uniekeFuncties.join(', ') : '';
     if (inputTags) inputTags.value = Array.isArray(project.tags) ? project.tags.join(', ') : '';
-    if (inputImage) inputImage.value = project.afbeeldingUrl || '';
     if (inputLive) inputLive.value = project.liveDemoUrl || '';
     if (inputGithub) inputGithub.value = project.githubUrl || '';
+
+    if (project.afbeeldingUrl) {
+      setProjectImagePreview(project.afbeeldingUrl, project.titel || 'Projectafbeelding', 'Bestaande afbeelding');
+    } else {
+      resetProjectImageDropzone();
+    }
 
     modalBackdrop.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
@@ -534,6 +737,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modalBackdrop.classList.add('hidden');
     document.body.style.overflow = '';
     if (addProjectForm) addProjectForm.reset();
+    resetProjectImageDropzone();
     if (inputOriginalId) inputOriginalId.value = '';
     if (inputId) inputId.disabled = false;
     idTouchedByUser = false;
@@ -624,6 +828,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const featuresRaw = inputFeatures ? inputFeatures.value.trim() : '';
       const tagsRaw = inputTags ? inputTags.value.trim() : '';
       let imageUrl = inputImage ? inputImage.value.trim() : '';
+      if (!imageUrl && inputImageUrlAlt && inputImageUrlAlt.value.trim()) {
+        imageUrl = inputImageUrlAlt.value.trim();
+      }
       const liveUrl = inputLive ? inputLive.value.trim() : '';
       const githubUrl = inputGithub ? inputGithub.value.trim() : '';
 
