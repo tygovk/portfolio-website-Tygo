@@ -29,14 +29,16 @@ export const defaultProjects = [
       "Interactieve stemmingsgrafiek en energietracker over tijd",
       "Offline-first werking met veilige encryptie in de browser"
     ],
-    afbeeldingUrl: "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1200&q=80",
+    afbeeldingUrl: "/images/foto dagboek 1.png",
     afbeeldingen: [
-      "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80",
-      "https://images.unsplash.com/photo-1507842229451-7f01be45c06b?auto=format&fit=crop&w=1200&q=80"
+      "/images/foto dagboek 1.png",
+      "/images/foto dagboek 2.png",
+      "/images/foto dagboek 3.png",
+      "/images/foto dagboek 4.png",
+      "/images/foto dagboek 5.png"
     ],
     tags: ["AI", "React", "Python", "Sentiment Analysis", "Tailwind CSS"],
-    liveDemoUrl: "https://example.com/demo/dagboek-app",
+    liveDemoUrl: "https://dagboektygo.vercel.app/",
     githubUrl: "https://github.com/tygovk/slimme-dagboek-app"
   },
   {
@@ -98,7 +100,7 @@ export const defaultProjects = [
       "Automatische koppeling van halve finales, finale en troostfinale",
       "Toeschouwersmodus en beheerdersmodus voor wedstrijdbeheer"
     ],
-    afbeeldingUrl: "https://voetbaltoernooi-eight.vercel.app/",
+    afbeeldingUrl: "https://images.unsplash.com/photo-1579952363873-27f3bde9be8e?auto=format&fit=crop&w=1200&q=80",
     afbeeldingen: [
       "https://images.unsplash.com/photo-1579952363873-27f3bde9be8e?auto=format&fit=crop&w=1200&q=80",
       "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&w=1200&q=80",
