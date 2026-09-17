@@ -84,6 +84,29 @@ export const defaultProjects = [
     tags: ["Python", "PyTorch", "Data Science", "D3.js", "Time Series"],
     liveDemoUrl: "https://example.com/demo/ecotrack",
     githubUrl: "https://github.com/tygovk/ecotrack-ai"
+  },
+  {
+    id: "voetbaltoernooi-manager",
+    titel: "Voetbaltoernooi Manager",
+    korteOmschrijving: "Een interactieve webapplicatie voor het eenvoudig organiseren en bijhouden van een voetbaltoernooi. Wedstrijden, uitslagen en standen worden automatisch overzichtelijk bijgehouden.",
+    langeOmschrijving: "Voor dit project heb ik een interactieve voetbaltoernooi-applicatie ontwikkeld waarmee een compleet toernooi eenvoudig digitaal kan worden georganiseerd en gevolgd. De applicatie toont live standen, wedstrijden, uitslagen, doelpunten en de knock-outfase, zodat deelnemers en toeschouwers altijd de actuele situatie kunnen bekijken.",
+    probleem: "Het handmatig bijhouden van wedstrijden, uitslagen en standen kost tijd en maakt het gemakkelijk om fouten te maken.",
+    mijnRol: "Full-stack ontwikkelaar: van de gebruikersinterface en toernooilogica tot realtime synchronisatie van wedstrijden, uitslagen en standen.",
+    uniekeFuncties: [
+      "Automatische groepsstanden op basis van punten en doelsaldo",
+      "Live wedstrijdprogramma met uitslagen en doelpunten",
+      "Automatische koppeling van halve finales, finale en troostfinale",
+      "Toeschouwersmodus en beheerdersmodus voor wedstrijdbeheer"
+    ],
+    afbeeldingUrl: "https://voetbaltoernooi-eight.vercel.app/",
+    afbeeldingen: [
+      "https://images.unsplash.com/photo-1579952363873-27f3bde9be8e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1553778263-73a83bab9b0c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    tags: ["TypeScript", "React", "Vite", "Firebase", "Realtime Data"],
+    liveDemoUrl: "https://voetbaltoernooi-eight.vercel.app/",
+    githubUrl: "https://github.com/tygovk/voetbaltoernooi"
   }
 ];
 
